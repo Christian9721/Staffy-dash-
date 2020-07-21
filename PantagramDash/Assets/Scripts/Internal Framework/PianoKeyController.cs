@@ -8,9 +8,13 @@ public class PianoKeyController : MonoBehaviour
 {
 	[Header("References")]
 	public MidiPlayer MidiPlayer;
-//	public Transform PianoKeysParent;
-//	public Transform SustainPedal;
-	public AudioClip[] Notes;
+
+    #region [------------	WE DON'T NEED FOR NOW A TRANSFORM PARENT AND PEDAL	------------]
+    //	public Transform PianoKeysParent;
+    //	public Transform SustainPedal;
+    #endregion
+
+    public AudioClip[] Notes;
 
 	[Header("Properties")]
 	public string StartKey = "A";			// If the first key is not "A", change it to the appropriate note.
@@ -34,17 +38,17 @@ public class PianoKeyController : MonoBehaviour
 
 	private float _sustainPedalLerp = 1;
 
-	// Should be controlled via MidiPlayer
-	// Idk what is this exactilly
-	public KeyMode KeyMode => MidiPlayer ? MidiPlayer.KeyMode : KeyMode.Physical;
+    #region [------------	WE DON'T NEED A PHYSICAL KEYNOTE	------------]
+    //public KeyMode KeyMode => MidiPlayer ? MidiPlayer.KeyMode : KeyMode.Physical;
+    #endregion
 
-	#region [------------	ShowMIDIChannelColours (WE DON´T NEED SHOW COLORS)	------------]
-	/*
+    #region [------------	ShowMIDIChannelColours (WE DON´T NEED SHOW COLORS)	------------]
+    /*
 	public bool ShowMIDIChannelColours => MidiPlayer ? MidiPlayer.ShowMIDIChannelColours : false;	
 	*/
-	#endregion
+    #endregion
 
-	public Dictionary<string, PianoKey> PianoNotes = new Dictionary<string, PianoKey>();
+    public Dictionary<string, NoteKey> PianoNotes = new Dictionary<string, NoteKey>();
 
 	private readonly string[] _keyIndex = new string[12] { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
 
@@ -55,6 +59,7 @@ public class PianoKeyController : MonoBehaviour
 			Regex sortReg = new Regex(@Regex);
             Notes = Notes.OrderBy(note => sortReg.Match(note.name).Value).ToArray();    //System.Linq;
 		}
+
 		#region [------------	PIANO	------------]
 
 		//var count = 0;
@@ -65,7 +70,7 @@ public class PianoKeyController : MonoBehaviour
 			
 			if (keyAudioSource)
 			{
-				PianoKey pianoKey = PianoKeysParent.GetChild(i).GetComponent<PianoKey>();
+				NoteKey pianoKey = PianoKeysParent.GetChild(i).GetComponent<NoteKey>();
 				
 				keyAudioSource.clip = Notes[count];
 				PianoNotes.Add(KeyString(count + Array.IndexOf(_keyIndex, StartKey)), pianoKey);
@@ -75,6 +80,7 @@ public class PianoKeyController : MonoBehaviour
 			}
 		}*/
 		#endregion
+
 	}
 
 	// https://stackoverflow.com/a/228060
@@ -90,7 +96,7 @@ public class PianoKeyController : MonoBehaviour
 		_sustainPedalLerp -= Time.deltaTime * (SustainPedalPressed ? 1 : -1) * 3.5f;
 		_sustainPedalLerp = Mathf.Clamp01(_sustainPedalLerp);
 
-        #region [------------	MOVER EL PEDAL	------------] 
+        #region [------------	WE DON'T NEED MOVE THE PEDAL	------------] 
         /*	if (PedalPressedAngle > PedalReleasedAngle)
 				SustainPedal.localRotation = Quaternion.Lerp(Quaternion.Euler(PedalReleasedAngle, 0, 0), Quaternion.Euler(PedalPressedAngle, 0, 0), _sustainPedalLerp);
 			else

@@ -74,7 +74,7 @@
     <Compile Include="Assets\Scripts\CameraSwitch.cs" />
     <Compile Include="Assets\Scripts\Internal Framework\INote.cs" />
     <Compile Include="Assets\Scripts\Internal Framework\MidiPlayer.cs" />
-    <Compile Include="Assets\Scripts\Internal Framework\PianoKey.cs" />
+    <Compile Include="Assets\Scripts\Internal Framework\NoteKey.cs" />
     <Compile Include="Assets\Scripts\Internal Framework\PianoKeyController.cs" />
     <Compile Include="Assets\Scripts\MusicText.cs" />
     <Compile Include="Assets\Scripts\NAudio\MidiFileInspector.cs" />

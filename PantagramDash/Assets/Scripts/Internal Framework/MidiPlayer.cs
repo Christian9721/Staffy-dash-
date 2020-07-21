@@ -11,7 +11,7 @@ public class MidiPlayer : MonoBehaviour
 	public float GlobalSpeed = 1;
 	public RepeatType RepeatType;
 
-	public KeyMode KeyMode;
+	//public KeyMode KeyMode;	<-------- we don´t need this
 
     #region [------------	WE DON'T NEED COLORS	------------]
     //public bool ShowMIDIChannelColours;
@@ -24,9 +24,11 @@ public class MidiPlayer : MonoBehaviour
 
 	[HideInInspector]
 	public MidiNote[] MidiNotes;
-	public UnityEvent OnPlayTrack { get; set; }
 
-	MidiFileInspector _midi;
+	[SerializeField]
+	public UnityEvent OnPlayTrack;
+	
+	private MidiFileInspector _midi;
 
 	// Current Path of the files (midi).
 	string _path;
@@ -40,7 +42,7 @@ public class MidiPlayer : MonoBehaviour
 
 	void Start ()
 	{
-		OnPlayTrack = new UnityEvent();
+		OnPlayTrack = new UnityEvent();	// <----------	A ver si no es necesario al ser publico
 
         #region [------------	FOR NOW WE DON'T NEED THIS EVENT	------------]
         //OnPlayTrack.AddListener(delegate{FindObjectOfType<MusicText>().StartSequence(MIDISongs[_midiIndex].Details);});
@@ -100,6 +102,7 @@ public class MidiPlayer : MonoBehaviour
 					PianoKeyDetector.PianoNotes[MidiNotes[_noteIndex].Note].Play(MidiNotes[_noteIndex].Velocity,
 																				MidiNotes[_noteIndex].Length,
 																				PianoKeyDetector.MidiPlayer.GlobalSpeed * MIDISongs[_midiIndex].Speed);
+					
 				}
                 _noteIndex++;
 			}
@@ -181,7 +184,10 @@ public class MidiPlayer : MonoBehaviour
 }
 
 public enum RepeatType { NoRepeat, RepeatLoop, RepeatOne }
-public enum KeyMode { Physical, ForShow }
+
+#region [------------	WE DONT NEED A PHYSICAL PIANO KEY	------------]
+//public enum KeyMode { Physical, ForShow }
+#endregion
 
 [Serializable]
 public class MidiSong

@@ -5,11 +5,16 @@ using System.Linq;
 using System.Collections.Generic;
 using NAudio.Midi;
 
+[Serializable]	//adding this to visualize
 public class MidiFileInspector
 {
+	[SerializeField]
 	public MidiFile MidiFile;
+
+	[SerializeField]
 	private List<TempoEvent> _tempoEvents = new List<TempoEvent>();
 
+	[SerializeField]
 	public MidiFileInspector (string fileName, bool strictCheck = false)
 	{
 		if (!File.Exists(fileName))
@@ -25,6 +30,7 @@ public class MidiFileInspector
 		}
 	}
 
+	[SerializeField]
 	public MidiNote[] GetNotes ()
 	{
 		BuildTempoList();
@@ -94,6 +100,7 @@ public class MidiFileInspector
 		return SortNotes(notes).ToArray();
 	}
 
+	[SerializeField]
 	public List<MidiNote> SortNotes (List<MidiNote> midiNotes)
 	{
 		while (true)
@@ -205,6 +212,7 @@ public class MidiNote
 
 	}
 
+	[SerializeField]
 	public MidiNote (double startTime, int channel, string note, int length, int velocity)
 	{
 		StartTime = startTime;
