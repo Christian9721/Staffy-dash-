@@ -13,7 +13,7 @@ public class MidiFileInspector
 	public MidiFileInspector (string fileName, bool strictCheck = false)
 	{
 		if (!File.Exists(fileName))
-			throw new FileNotFoundException(String.Format("Midi file not found at {0}!", fileName));
+			throw new FileNotFoundException(string.Format("Midi file not found at {0}!", fileName));
 	
 		try
 		{

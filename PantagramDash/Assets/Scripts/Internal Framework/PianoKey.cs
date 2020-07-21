@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
-public class PianoKey : MonoBehaviour
+[Obsolete("Need to rename this class, because this works for \'A piano key concept\' and we need it for a Note")]
+public class PianoKey : MonoBehaviour, INote
 {
 	public List<AudioSource> AudioSources { get; set; }
 	public AudioSource CurrentAudioSource { get; set; }
@@ -10,33 +12,49 @@ public class PianoKey : MonoBehaviour
 
 	public bool Sustain { get; set; }
 	public float SustainSeconds { get; set; }
-	public Material Material { get; set; }
 
-	private bool _play = false;
+	#region [------------	WE DON'T NEED MATERIAL	------------]
+	//public Material Material { get; set; }
+    #endregion
+
+    private bool _play = false;
 	private bool _played = false;
 	private float _velocity;
 	private float _length;
 	private float _speed;
-	private Color _colour;
-	private Color _originalColour;
-	private float _Timer;
+
+	#region [------------	WE DON'T NEED COLORS	------------]
+	//private Color _colour;
+	//private Color _originalColour;
+    #endregion
+
+    private float _Timer;
 	private float _keyAngle = 360f;
 
 	private Vector3 _position;
-	private Vector3 _rotation;
 
-	private Rigidbody _rigidbody;
-	private HingeJoint _springJoint;
-	private ConstantForce _constantForce;
+    #region [------------	WE DON'T NEED ROTATION	------------]
+    //private Vector3 _rotation;
+    #endregion
+
+    private Rigidbody _rigidbody;
+
+	#region [------------	WE DON'T NEED THIS KIND OF PHYSICS	------------]
+	//private HingeJoint _springJoint;
+	//private ConstantForce _constantForce;
+	#endregion
+
+	//-------------->	I'll try to replace it with Tweens	<--------------
 	private IEnumerator _playCoro;
 	private IEnumerator _volumeCoro;
+	//--------------									 	--------------
 
 	private List<AudioSource> _toFade = new List<AudioSource>();
 
 	private bool _depression;
 	private float _startAngle;
 
-	// Debug
+	[Tooltip("Only for debugg")]
 	public bool TestPlay = false;
 
 	void Awake()
@@ -46,21 +64,27 @@ public class PianoKey : MonoBehaviour
 		CurrentAudioSource = AudioSources[0];
 
 		_rigidbody = GetComponent<Rigidbody>();
-		_springJoint = GetComponent<HingeJoint>();
-		_constantForce = GetComponent<ConstantForce>();
+		#region [------------	WE DON'T NEED THIS KIND OF PHYSICS	------------]
+		//_springJoint = GetComponent<HingeJoint>();
+		//_constantForce = GetComponent<ConstantForce>();
+		#endregion
 
 		_position = transform.position;
-		_rotation = transform.eulerAngles;
+		//_rotation = transform.eulerAngles;
 
+        #region [------------	WE DON'T NEED COLORS	------------]
+        /*
 		Material = GetComponent<MeshRenderer>().material;
-		_originalColour = Material.color;
-	}
+		_originalColour = Material.color;*/
+        #endregion
+    }
 
-	// Update is called once per frame
-	void Update()
+    void Update()
 	{
-		Constrain();
-
+		#region [------------	WE DON'T NEED ROTATION	------------]
+		//Constrain();
+        #endregion
+        
 		if (_play)
 		{
 			KeyPlayMechanics();
@@ -83,7 +107,7 @@ public class PianoKey : MonoBehaviour
 			else if (transform.eulerAngles.x > 359.9 || transform.eulerAngles.x < 350)
 			{
 				FadeAll();
-				
+
 				_played = false;
 			}
 		}
@@ -93,7 +117,7 @@ public class PianoKey : MonoBehaviour
 			{
 				FadeAll();
 			}
-			
+
 			if (_toFade.Count > 0)
 			{
 				FadeList();
@@ -108,6 +132,8 @@ public class PianoKey : MonoBehaviour
 		}
 	}
 
+    #region [------------	WE DON'T METHODS TO MAKE ROTATION	------------]
+    /*
 	void Constrain()
 	{
 		transform.position = _position;
@@ -122,11 +148,15 @@ public class PianoKey : MonoBehaviour
 			transform.rotation = Quaternion.Euler(352, transform.eulerAngles.y, transform.eulerAngles.z);
 		}
 	}
+	*/
+    #endregion
 
-	void KeyPlayMechanics()
+    void KeyPlayMechanics()
 	{
 		if (_Timer < 1)
 		{
+			#region [------------	WE DON'T NEED COLORS AND ROTATION	------------]
+			/*
 			_springJoint.useSpring = false;
 			_constantForce.enabled = false;
 			
@@ -153,17 +183,22 @@ public class PianoKey : MonoBehaviour
 						_keyAngle += Time.deltaTime * PianoKeyController.PressAngleDecay;
 				}
 			}
-
-			if (PianoKeyController.ShowMIDIChannelColours)
+            
+            if (PianoKeyController.ShowMIDIChannelColours)
 				Material.color = Color.Lerp(_colour, _originalColour, _Timer);
-			
+			*/
+			#endregion
+
 			_Timer += Time.deltaTime / _length * _speed;
 		}
 		else
 		{
-			Material.color = _originalColour;
-			_constantForce.enabled = true;
-			_springJoint.useSpring = true;
+
+			#region [------------	WE DON'T NEED THIS KIND OF PHYSICS AND COLORS	------------]
+			//Material.color = _originalColour;
+			//_constantForce.enabled = true;
+			//_springJoint.useSpring = true;
+			#endregion
 			_play = false;
 		}
 	}
@@ -210,13 +245,15 @@ public class PianoKey : MonoBehaviour
 		
 		if (_play)
 		{
-			if (PianoKeyController.RepeatedKeyTeleport)
+			#region [------------	WE DON'T NEED ROTATION BECAUSE THIS SCRIPT IS FOR NOTES NOT FOR PHYSICAL KEYS	------------]
+			/*if (PianoKeyController.RepeatedKeyTeleport)
 				transform.rotation = Quaternion.Euler(_keyAngle, transform.eulerAngles.y, transform.eulerAngles.z);
 			else
-				_rigidbody.AddTorque(Vector3.right * 127);
-		}
-		
-		_velocity = velocity;
+				_rigidbody.AddTorque(Vector3.right * 127);*/
+            #endregion
+        }
+
+        _velocity = velocity;
 		_length = length;
 		_speed = speed;
 		_Timer = 0;
@@ -226,7 +263,9 @@ public class PianoKey : MonoBehaviour
 		if (PianoKeyController.KeyMode == KeyMode.ForShow)
 			PlayVirtualAudio();
 	}
-
+	
+	#region [------------	WE DON´T NEED THIS CAUSE WE DONT USE COLORS	------------]
+	/*
 	public void Play(Color colour, float velocity = 10, float length = 1, float speed = 1)
 	{
 		if (PianoKeyController.ShowMIDIChannelColours)
@@ -236,7 +275,10 @@ public class PianoKey : MonoBehaviour
 		
 		this.Play(velocity, length, speed);
 	}
-
+	*/
+	#endregion
+	
+	[Obsolete("We need to check this Ienumerator")]
 	IEnumerator PlayPressedAudio()
 	{
 		if (!PianoKeyController.NoMultiAudioSource && CurrentAudioSource.isPlaying)
@@ -265,16 +307,21 @@ public class PianoKey : MonoBehaviour
 			_toFade.Add(AudioSources[index]);
 		}
 
+		//WE NEED TO CHECK THIS IENUMERATOR BECAUSE ROTATION AFFECTS VOLUME AND WE DON'T NEED ROTATION..
+		#region [------------	THE VOLUME DEPENDS OF THE ROTATION OF THE KEY BUT WE DONT HAVE A PIANO KEY..	------------]
 		_startAngle = transform.eulerAngles.x;
 
 		yield return new WaitForFixedUpdate();
-		yield return new WaitForFixedUpdate();
+		yield return new WaitForFixedUpdate(); // two yields in a row? mmm wtf okay..
+
 
 		if (Mathf.Abs(_startAngle - transform.eulerAngles.x) > 0)
 		{
 			CurrentAudioSource.volume = Mathf.Lerp(0, 1, Mathf.Clamp((Mathf.Abs(_startAngle - transform.eulerAngles.x) / 2f), 0, 1));
 		}
 
+        #endregion
+        
 		CurrentAudioSource.Play();
 	}
 

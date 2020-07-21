@@ -8,8 +8,8 @@ public class PianoKeyController : MonoBehaviour
 {
 	[Header("References")]
 	public MidiPlayer MidiPlayer;
-	public Transform PianoKeysParent;
-	public Transform SustainPedal;
+//	public Transform PianoKeysParent;
+//	public Transform SustainPedal;
 	public AudioClip[] Notes;
 
 	[Header("Properties")]
@@ -27,47 +27,22 @@ public class PianoKeyController : MonoBehaviour
 	[Header("Attributes")]
 	public bool SustainPedalPressed = true;	// When enabled, keys will not stop playing immediately after release.
 	public bool KeyPressAngleDecay = true;	// When enabled, keys will slowly be released.
-	public bool RepeatedKeyTeleport = true;	// When enabled, during midi mode, a note played on a pressed key will force the rotation to reset.
-	
+	public bool RepeatedKeyTeleport = true; // When enabled, during midi mode, a note played on a pressed key will force the rotation to reset.
+
+	[SerializeField]
+	private string Regex = "[0-9][0-9]-[a-z]-*[0-9]";
 
 	private float _sustainPedalLerp = 1;
 
 	// Should be controlled via MidiPlayer
-	public KeyMode KeyMode					
-	{
-		get
-		{
-			if (MidiPlayer)
-				return MidiPlayer.KeyMode;
-			else
-				return KeyMode.Physical;
-		}
-	}
+	// Idk what is this exactilly
+	public KeyMode KeyMode => MidiPlayer ? MidiPlayer.KeyMode : KeyMode.Physical;
 
-	public bool ShowMIDIChannelColours		
-	{
-		get
-		{
-			if (MidiPlayer)
-				return MidiPlayer.ShowMIDIChannelColours;
-			else
-				return false;
-		}
-	}
-
-	public Color[] MIDIChannelColours					
-	{
-		get
-		{
-			if (MidiPlayer)
-				return MidiPlayer.MIDIChannelColours;
-			else
-				return null;
-		}
-	}
-
-	[Header("Note: Leave regex blank to sort alphabetically")]
-    public string Regex;
+	#region [------------	ShowMIDIChannelColours (WE DON´T NEED SHOW COLORS)	------------]
+	/*
+	public bool ShowMIDIChannelColours => MidiPlayer ? MidiPlayer.ShowMIDIChannelColours : false;	
+	*/
+	#endregion
 
 	public Dictionary<string, PianoKey> PianoNotes = new Dictionary<string, PianoKey>();
 
@@ -78,12 +53,13 @@ public class PianoKeyController : MonoBehaviour
 		if (Sort)
 		{
 			Regex sortReg = new Regex(@Regex);
-            Notes = Notes.OrderBy(note => sortReg.Match(note.name).Value).ToArray();
+            Notes = Notes.OrderBy(note => sortReg.Match(note.name).Value).ToArray();    //System.Linq;
 		}
+		#region [------------	PIANO	------------]
 
-		var count = 0;
+		//var count = 0;
 
-		for (int i = 0; i < PianoKeysParent.childCount; i++)
+		/*for (int i = 0; i < PianoKeysParent.childCount; i++)
 		{
 			AudioSource keyAudioSource = PianoKeysParent.GetChild(i).GetComponent<AudioSource>();
 			
@@ -97,7 +73,8 @@ public class PianoKeyController : MonoBehaviour
 				
 				count++;
 			}
-		}
+		}*/
+		#endregion
 	}
 
 	// https://stackoverflow.com/a/228060
@@ -113,13 +90,16 @@ public class PianoKeyController : MonoBehaviour
 		_sustainPedalLerp -= Time.deltaTime * (SustainPedalPressed ? 1 : -1) * 3.5f;
 		_sustainPedalLerp = Mathf.Clamp01(_sustainPedalLerp);
 
-		if (PedalPressedAngle > PedalReleasedAngle)
-			SustainPedal.localRotation = Quaternion.Lerp(Quaternion.Euler(PedalReleasedAngle, 0, 0), Quaternion.Euler(PedalPressedAngle, 0, 0), _sustainPedalLerp);
-		else
-			SustainPedal.localRotation = Quaternion.Lerp(Quaternion.Euler(PedalPressedAngle, 0, 0), Quaternion.Euler(PedalReleasedAngle, 0, 0), _sustainPedalLerp);
-	}
+        #region [------------	MOVER EL PEDAL	------------] 
+        /*	if (PedalPressedAngle > PedalReleasedAngle)
+				SustainPedal.localRotation = Quaternion.Lerp(Quaternion.Euler(PedalReleasedAngle, 0, 0), Quaternion.Euler(PedalPressedAngle, 0, 0), _sustainPedalLerp);
+			else
+				SustainPedal.localRotation = Quaternion.Lerp(Quaternion.Euler(PedalPressedAngle, 0, 0), Quaternion.Euler(PedalReleasedAngle, 0, 0), _sustainPedalLerp);
+		*/
+        #endregion
+    }
 
-	string KeyString (int count)
+    string KeyString (int count)
 	{
 		return _keyIndex[count % 12] + (Mathf.Floor(count / 12) + StartOctave);
 	}

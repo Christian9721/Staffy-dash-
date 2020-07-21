@@ -12,8 +12,12 @@ public class MidiPlayer : MonoBehaviour
 	public RepeatType RepeatType;
 
 	public KeyMode KeyMode;
-	public bool ShowMIDIChannelColours;
-	public Color[] MIDIChannelColours;
+
+    #region [------------	WE DON'T NEED COLORS	------------]
+    //public bool ShowMIDIChannelColours;
+    #endregion
+
+    public Color[] MIDIChannelColours;
 
 	[Header("Ensure Song Name is filled for builds")]
 	public MidiSong[] MIDISongs;
@@ -24,7 +28,9 @@ public class MidiPlayer : MonoBehaviour
 
 	MidiFileInspector _midi;
 
+	// Current Path of the files (midi).
 	string _path;
+
 	string[] _keyIndex;
 	int _noteIndex = 0;
 	int _midiIndex;
@@ -35,9 +41,12 @@ public class MidiPlayer : MonoBehaviour
 	void Start ()
 	{
 		OnPlayTrack = new UnityEvent();
-		OnPlayTrack.AddListener(delegate{FindObjectOfType<MusicText>().StartSequence(MIDISongs[_midiIndex].Details);});
-		
-		_midiIndex = 0;
+
+        #region [------------	FOR NOW WE DON'T NEED THIS EVENT	------------]
+        //OnPlayTrack.AddListener(delegate{FindObjectOfType<MusicText>().StartSequence(MIDISongs[_midiIndex].Details);});
+        #endregion
+
+        _midiIndex = 0;
 
 		if (!_preset)
 			PlayCurrentMIDI();
@@ -48,11 +57,16 @@ public class MidiPlayer : MonoBehaviour
 #else
 			_path = string.Format("{0}/MIDI/{1}.mid", Application.streamingAssetsPath, MIDISongs[0].SongFileName);
 #endif
+
 			_midi = new MidiFileInspector(_path);
-			
-			OnPlayTrack.Invoke();
+
+			#region [------------	EVENT MAY BE NULL	------------]
+			//OnPlayTrack.Invoke();
+			#endregion
+
+			OnPlayTrack?.Invoke();	// This will never be null :)
 		}
-	}
+    }
 
 	void Update ()
 	{
@@ -67,6 +81,8 @@ public class MidiPlayer : MonoBehaviour
 			{
 				if (PianoKeyDetector.PianoNotes.ContainsKey(MidiNotes[_noteIndex].Note))
 				{
+					#region [------------	WE DONT NEED PLAY WITH COLORS, ONLY THE NOTE	------------]
+					/*
 					if (ShowMIDIChannelColours)
 					{
 						PianoKeyDetector.PianoNotes[MidiNotes[_noteIndex].Note].Play(MIDIChannelColours[MidiNotes[_noteIndex].Channel],
@@ -76,11 +92,16 @@ public class MidiPlayer : MonoBehaviour
 					}
 					else
 						PianoKeyDetector.PianoNotes[MidiNotes[_noteIndex].Note].Play(MidiNotes[_noteIndex].Velocity, 
-																				MidiNotes[_noteIndex].Length, 
+																				MidiNotes[_noteIndex].Length,
+																				PianoKeyDetector.MidiPlayer.GlobalSpeed * MIDISongs[_midiIndex].Speed);
+                    */
+					#endregion
+
+					PianoKeyDetector.PianoNotes[MidiNotes[_noteIndex].Note].Play(MidiNotes[_noteIndex].Velocity,
+																				MidiNotes[_noteIndex].Length,
 																				PianoKeyDetector.MidiPlayer.GlobalSpeed * MIDISongs[_midiIndex].Speed);
 				}
-
-				_noteIndex++;
+                _noteIndex++;
 			}
 		}
 		else
@@ -117,7 +138,7 @@ public class MidiPlayer : MonoBehaviour
 #if UNITY_EDITOR
 		_path = string.Format("{0}/MIDI/{1}.mid", Application.streamingAssetsPath, MIDISongs[_midiIndex].MIDIFile.name);
 #else
-		_path = string.Format("{0}/MIDI/{1}.mid", Application.streamingAssetsPath, MIDISongs[_midiIndex].SongFileName);
+		_path = string.Format("Audio/{0}/MIDI/{1}.mid", Application.streamingAssetsPath, MIDISongs[_midiIndex].SongFileName);
 #endif
 		_midi = new MidiFileInspector(_path);
 		MidiNotes = _midi.GetNotes();
