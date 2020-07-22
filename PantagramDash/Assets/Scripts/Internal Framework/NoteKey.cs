@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using MayenCore;
 
 /// <summary>
 /// Im pretty sure this class may be optimized af in the case of fade volume
@@ -68,7 +69,6 @@ public class NoteKey : MonoBehaviour, INote
 
 		_position = transform.position;
 		//_rotation = transform.eulerAngles;
-
         #region [------------	WE DON'T NEED COLORS	------------]
         /*
 		Material = GetComponent<MeshRenderer>().material;

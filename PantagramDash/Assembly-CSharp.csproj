@@ -72,7 +72,7 @@
     <Compile Include="Assets\Animation\Library\LeanTween\Framework\LeanTween.cs" />
     <Compile Include="Assets\Animation\Library\LeanTween\Framework\LeanTweenExt.cs" />
     <Compile Include="Assets\Scripts\CameraSwitch.cs" />
-    <Compile Include="Assets\Scripts\Internal Framework\INote.cs" />
+    <Compile Include="Assets\Scripts\Internal Framework\MayenCoreFramework.cs" />
     <Compile Include="Assets\Scripts\Internal Framework\MidiPlayer.cs" />
     <Compile Include="Assets\Scripts\Internal Framework\NoteKey.cs" />
     <Compile Include="Assets\Scripts\Internal Framework\PianoKeyController.cs" />
