@@ -77,7 +77,6 @@
     <Compile Include="Assets\Scripts\Internal Framework\NoteKey.cs" />
     <Compile Include="Assets\Scripts\Internal Framework\PianoKeyController.cs" />
     <Compile Include="Assets\Scripts\MusicText.cs" />
-    <Compile Include="Assets\Scripts\NAudio\MidiFileInspector.cs" />
     <None Include="Assets\Audio\Notes\UprightPiano\_readme_and_license.txt" />
     <None Include="Assets\Fonts\Crimson\LICENSE.txt" />
     <None Include="Assets\StreamingAssets\MIDI\LICENSE.txt" />
@@ -266,6 +265,24 @@
     </Reference>
     <Reference Include="NAudio">
       <HintPath>F:/Github/Pentagram-dash-/PantagramDash/Assets/Plugins/NAudio/NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.OdinInspector.Attributes">
+      <HintPath>F:/Github/Pentagram-dash-/PantagramDash/Assets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.OdinInspector.Editor">
+      <HintPath>F:/Github/Pentagram-dash-/PantagramDash/Assets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Serialization.Config">
+      <HintPath>F:/Github/Pentagram-dash-/PantagramDash/Assets/Plugins/Sirenix/Assemblies/Sirenix.Serialization.Config.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>F:/Github/Pentagram-dash-/PantagramDash/Assets/Plugins/Sirenix/Assemblies/Sirenix.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Utilities">
+      <HintPath>F:/Github/Pentagram-dash-/PantagramDash/Assets/Plugins/Sirenix/Assemblies/Sirenix.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Sirenix.Utilities.Editor">
+      <HintPath>F:/Github/Pentagram-dash-/PantagramDash/Assets/Plugins/Sirenix/Assemblies/Sirenix.Utilities.Editor.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.0f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -703,7 +720,16 @@
       <HintPath>F:/Github/Pentagram-dash-/PantagramDash/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup></ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Sirenix.OdinInspector.CompatibilityLayer.csproj">
+      <Project>{7734E2DE-F242-345D-A905-0F1EAA69BF6A}</Project>
+      <Name>Sirenix.OdinInspector.CompatibilityLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="Sirenix.OdinInspector.CompatibilityLayer.Editor.csproj">
+      <Project>{3A8D82CB-FCDD-F81D-C276-F73112FB3B98}</Project>
+      <Name>Sirenix.OdinInspector.CompatibilityLayer.Editor</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

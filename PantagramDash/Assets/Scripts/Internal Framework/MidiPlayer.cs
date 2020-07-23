@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using MayenCore;
+using Sirenix.OdinInspector;
 
 public class MidiPlayer : MonoBehaviour
 {
@@ -17,17 +19,16 @@ public class MidiPlayer : MonoBehaviour
     //public bool ShowMIDIChannelColours;
     #endregion
 
-    public Color[] MIDIChannelColours;
-
 	[Header("Ensure Song Name is filled for builds")]
 	public MidiSong[] MIDISongs;
 
-	[HideInInspector]
+	//[HideInInspector]
+	[Title("Note List", "The value of each note of the song")]
 	public MidiNote[] MidiNotes;
 
 	[SerializeField]
 	public UnityEvent OnPlayTrack;
-	
+
 	private MidiFileInspector _midi;
 
 	// Current Path of the files (midi).
@@ -42,6 +43,7 @@ public class MidiPlayer : MonoBehaviour
 
 	void Start ()
 	{
+		PianoKeyDetector = PianoKeyController.Instance;
 		OnPlayTrack = new UnityEvent();	// <----------	A ver si no es necesario al ser publico
 
         #region [------------	FOR NOW WE DON'T NEED THIS EVENT	------------]
@@ -193,10 +195,12 @@ public enum RepeatType { NoRepeat, RepeatLoop, RepeatOne }
 public class MidiSong
 {
 #if UNITY_EDITOR
+	[Space]
+	[GUIColor(0.3f, 0.8f, 0.8f, 1f)]
 	public UnityEngine.Object MIDIFile;
 #endif
 	public string SongFileName;
 	public float Speed = 1;
-	[TextArea]
+	[MultiLineProperty(5)]
 	public string Details;
 }

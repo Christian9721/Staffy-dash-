@@ -11,7 +11,9 @@ public class NoteKey : MonoBehaviour, INote
 {
 	public List<AudioSource> AudioSources { get; set; }
 	public AudioSource CurrentAudioSource { get; set; }
-	public PianoKeyController PianoKeyController { get; set; }
+
+	//Singleton implement
+	public PianoKeyController PianoKeyController = PianoKeyController.Instance;
 
 	public bool Sustain { get; set; }
 	public float SustainSeconds { get; set; }
